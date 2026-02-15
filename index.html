@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Book for Syafiani</title>
+    <title>A Special Scrapbook for Syafiani</title>
     <style>
         :root {
-            --bg-color: #cbd9f4;
+            --bg-blue: #cbd9f4;
             --book-cover: #a2b9e7;
-            --page-color: #ffffff;
-            --text-color: #2a5a9e;
+            --page-white: #ffffff;
+            --soft-pink: #fbcce3;
+            --text-blue: #2a5a9e;
         }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-blue);
             background-image: radial-gradient(white 15%, transparent 16%);
             background-size: 30px 30px;
             display: flex;
@@ -21,28 +22,36 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            perspective: 2000px; /* Essential for the 3D book flip */
+            perspective: 2000px;
             font-family: 'Georgia', serif;
             overflow: hidden;
         }
 
-        /* The Book Container */
-        .book {
+        /* Fixed Centering Container */
+        .book-container {
+            position: relative;
             width: 450px;
             height: 350px;
-            position: relative;
-            transition: transform 1s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-            box-shadow: 20px 20px 50px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* When opened, move the whole book to the right so it stays centered */
+        .book {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            cursor: pointer;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        /* Shifts the whole book so the center of the spread is in the center of the screen */
         .book.open {
             transform: translateX(50%);
         }
 
-        /* Shared Page Styles */
         .page {
             position: absolute;
             width: 100%;
@@ -72,79 +81,68 @@
             color: white;
             text-align: center;
             padding: 20px;
-            font-size: 1.6rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            font-size: 1.5rem;
+            line-height: 1.4;
         }
 
-        /* The Inside (Back of the cover and the right page) */
+        /* Inside Right Page (The message) */
         .content-right {
-            background-color: var(--page-color);
+            background-color: var(--page-white);
             z-index: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 30px;
+            padding: 35px;
             box-sizing: border-box;
-            border: 1px solid #ddd;
+            border: 1px solid #eee;
         }
 
+        /* Inside Left Page (The photo) */
         .content-left {
-            background-color: var(--page-color);
+            background-color: var(--page-white);
             position: absolute;
             width: 100%;
             height: 100%;
-            transform: rotateY(-180deg); /* Hidden behind cover until flip */
+            transform: rotateY(-180deg);
             display: flex;
             justify-content: center;
             align-items: center;
             backface-visibility: hidden;
-            border-right: 2px solid #eee;
+            border-right: 1px solid #ddd;
         }
 
-        /* Images and Text */
         .scrapbook-photo {
-            width: 80%;
-            max-height: 80%;
+            width: 85%;
+            max-height: 85%;
             border: 10px solid white;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
             transform: rotate(-2deg);
             object-fit: cover;
         }
 
-        .message-text {
-            color: #444;
-            line-height: 1.6;
-            font-style: italic;
-        }
-
-        /* Opening Action */
         .book.open .page.cover-group {
             transform: rotateY(-180deg);
         }
 
-        /* Decorative Bloom Animation */
-        .decoration {
+        /* Floating Bloom Effect */
+        .bloom {
             position: absolute;
             pointer-events: none;
-            animation: bloom 2s forwards ease-out;
+            z-index: 100;
+            animation: fly 2s forwards ease-out;
         }
 
-        @keyframes bloom {
-            0% { transform: scale(0) translate(0, 0); opacity: 1; }
+        @keyframes fly {
+            0% { transform: scale(0); opacity: 1; }
             100% { transform: scale(1.5) translate(var(--x), var(--y)); opacity: 0; }
         }
 
-        #hint {
+        #tap-instruction {
             position: absolute;
-            bottom: -40px;
-            color: var(--text-color);
-font-weight: bold;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+            bottom: -50px;
+color: var(--text-blue);
+            font-weight: bold;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -154,49 +152,52 @@ font-weight: bold;
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="book" id="myBook" onclick="openBook()">
-        
-        <div class="page content-right">
-            <h2 style="color: var(--text-color); margin-top: 0;">Happy Birthday!</h2>
-            <p class="message-text">
-                "Some people are like stars—they don’t just exist; they light up every dark corner of the lives they touch..."
-                <br><br>
-                May you always bloom with grace and fire, Syafiani. Today, and every day, the world is better because you are in it. 🌸✨
-            </p>
-        </div>
+    <div class="book-container">
+        <div class="book" id="scrapbook" onclick="openMe()">
+            
+            <div class="page content-right">
+                <h2 style="color: var(--text-blue); margin: 0 0 15px 0;">Happy Birthday!</h2>
+                <p style="color: #555; line-height: 1.6; font-style: italic;">
+                    "Some people are like stars—they don’t just exist; they light up every dark corner of the lives they touch..."
+                    <br><br>
+                    May you always bloom with grace and fire, Syafiani. Today, and every day, the world is better because you are in it. 🌸✨
+                </p>
+            </div>
 
-        <div class="page cover-group">
-            <div class="page cover">
-                <h1>Click to open this special book, <br> Miss Syafiani ☁️</h1>
-                <div id="hint">Tap to open 💌</div>
-            </div>
-            <div class="page content-left">
-                <img src="profile.jpg" class="scrapbook-photo" alt="Photo">
+            <div class="page cover-group">
+                <div class="page cover">
+                    <h1>Click to open this special book, <br> Miss Syafiani ☁️</h1>
+                </div>
+                <div class="page content-left">
+                    <img src="profile.jpg" class="scrapbook-photo" alt="Birthday Photo">
+                </div>
             </div>
         </div>
+        <div id="tap-instruction">Click to reveal the magic 💌</div>
     </div>
 
     <script>
-        function openBook() {
-            const book = document.getElementById('myBook');
+        function openMe() {
+            const book = document.getElementById('scrapbook');
             const music = document.getElementById('music');
+            const hint = document.getElementById('tap-instruction');
 
             if (!book.classList.contains('open')) {
                 book.classList.add('open');
                 music.play();
+                hint.style.opacity = '0';
 
-                // Dramatic Bloom Effect
-                for (let i = 0; i < 30; i++) {
-                    const decor = document.createElement('div');
-                    decor.className = 'decoration';
-                    decor.innerHTML = ['✨','🌸','🎈','☁️'][Math.floor(Math.random()*4)];
-                    decor.style.left = '50%';
-                    decor.style.top = '50%';
-                    decor.style.setProperty('--x', (Math.random() * 400 - 200) + 'px');
-                    decor.style.setProperty('--y', (Math.random() * -400 - 50) + 'px');
-                    decor.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                    document.body.appendChild(decor);
-                    setTimeout(() => decor.remove(), 2000);
+                for (let i = 0; i < 35; i++) {
+                    const b = document.createElement('div');
+                    b.className = 'bloom';
+                    b.innerHTML = ['✨','🌸','🌟','☁️','🧁'][Math.floor(Math.random()*5)];
+                    b.style.left = '50%';
+                    b.style.top = '50%';
+                    b.style.setProperty('--x', (Math.random() * 600 - 300) + 'px');
+                    b.style.setProperty('--y', (Math.random() * -500 - 50) + 'px');
+                    b.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    document.body.appendChild(b);
+                    setTimeout(() => b.remove(), 2000);
                 }
             }
         }
