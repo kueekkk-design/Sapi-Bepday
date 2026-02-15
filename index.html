@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,42 +19,35 @@
             font-family: 'Georgia', serif;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; 
             height: 100vh;
             margin: 0;
             overflow: hidden;
         }
 
-        /* Dramatic Pulsing Glow */
-        .glow-circle {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
-            animation: pulse 4s infinite ease-in-out;
-            z-index: 1;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        /* Envelope Design */
         .envelope-wrapper {
-            position: relative;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .envelope {
             position: relative;
             width: 350px;
             height: 220px;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.8s ease;
+        }
+
+        /* This moves the whole thing down when opened to keep the letter centered */
+        .envelope-wrapper.open {
+            transform: translateY(120px); 
+        }
+
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             background: var(--white);
             border-radius: 0 0 20px 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             border: 2px solid #eee;
+            z-index: 4;
         }
 
         .flap {
@@ -71,13 +64,11 @@
             z-index: 5;
         }
 
-        /* The Letter - High Contrast & Dramatic */
         .letter {
             position: absolute;
             bottom: 10px;
             left: 15px;
-            width: 320px;
-            height: 200px;
+            width: 290px;
             background: #fff;
             padding: 25px;
             border-radius: 15px;
@@ -88,42 +79,40 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
+        /* Updated Image Path to match your file: image.png */
         .letter img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            border-radius: 20px; /* Looks better with your Cinnamoroll image */
             margin-bottom: 15px;
-            border: 3px solid var(--soft-pink);
+            object-fit: contain;
         }
 
-        .letter h2 { color: #2a5a9e; font-size: 1.5rem; margin-bottom: 10px; }
-        .letter p { color: #444; font-size: 1rem; line-height: 1.6; font-style: italic; }
+        .letter h2 { color: #2a5a9e; font-size: 1.4rem; margin-bottom: 10px; }
+        .letter p { color: #444; font-size: 0.95rem; line-height: 1.6; }
 
-        /* Opening States */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 1;
         }
 
         .envelope-wrapper.open .letter {
-            transform: translateY(-240px);
-            height: auto;
-            min-height: 400px;
+            transform: translateY(-300px);
             opacity: 1;
             z-index: 6;
         }
 
-        /* Blooming Stars */
         .star {
             position: absolute;
             color: var(--gold);
             pointer-events: none;
             animation: bloom 2s forwards ease-out;
+            z-index: 100;
         }
 
         @keyframes bloom {
             0% { transform: scale(0) rotate(0); opacity: 1; }
-            100% { transform: scale(1.5) rotate(360deg) translateY(-100px); opacity: 0; }
+            100% { transform: scale(1.5) rotate(360deg) translateY(-200px); opacity: 0; }
         }
     </style>
 </head>
@@ -133,20 +122,18 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
-    <div class="glow-circle"></div>
-
     <div class="envelope-wrapper" id="wrapper" onclick="openLetter()">
         <div class="flap"></div>
         <div class="envelope"></div>
         
         <div class="letter">
-            <img src="profile.
-jpg" alt="Syafiani">
+            <img src="image.png" alt="Cinnamoroll">
             <h2>Happy Birthday, Syafiani</h2>
             <p>
                 "Some people are like stars—they don’t just exist; they light up every dark corner of the lives they touch..."
                 <br><br>
-                May you always bloom with grace and fire. Today, and every day, the world is better because you are in it.
+                May you always bloom with grace and fire.
+Today, and every day, the world is better because you are in it.
             </p>
         </div>
     </div>
@@ -160,7 +147,6 @@ jpg" alt="Syafiani">
                 wrapper.classList.add('open');
                 music.play();
 
-                // Blooming Effect: Burst of stars
                 for (let i = 0; i < 40; i++) {
                     setTimeout(() => {
                         const star = document.createElement('div');
@@ -168,7 +154,6 @@ jpg" alt="Syafiani">
                         star.innerHTML = '✦';
                         star.style.left = Math.random() * 100 + 'vw';
                         star.style.top = Math.random() * 100 + 'vh';
-                        star.style.fontSize = Math.random() * 20 + 10 + 'px';
                         document.body.appendChild(star);
                         setTimeout(() => star.remove(), 2000);
                     }, i * 50);
