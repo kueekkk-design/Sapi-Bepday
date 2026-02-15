@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Grand Celebration for Syafiani ☁️</title>
+    <style>
+        :root {
+            --bg-blue: #cbd9f4;
+            --soft-pink: #fbcce3;
+            --gold: #ffd700;
+            --white: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-blue);
+            background-image: radial-gradient(var(--white) 10%, transparent 11%);
+            background-size: 40px 40px;
+            font-family: 'Georgia', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Dramatic Pulsing Glow */
+        .glow-circle {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+            animation: pulse 4s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        /* Envelope Design */
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .envelope {
+            position: relative;
+            width: 350px;
+            height: 220px;
+            background: var(--white);
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            border: 2px solid #eee;
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 175px solid transparent;
+            border-right: 175px solid transparent;
+            border-top: 130px solid var(--soft-pink);
+            transform-origin: top;
+            transition: transform 0.6s ease;
+            z-index: 5;
+        }
+
+        /* The Letter - High Contrast & Dramatic */
+        .letter {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 320px;
+            height: 200px;
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 2;
+            text-align: center;
+            opacity: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .letter img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid var(--soft-pink);
+        }
+
+        .letter h2 { color: #2a5a9e; font-size: 1.5rem; margin-bottom: 10px; }
+        .letter p { color: #444; font-size: 1rem; line-height: 1.6; font-style: italic; }
+
+        /* Opening States */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .letter {
+            transform: translateY(-240px);
+            height: auto;
+            min-height: 400px;
+            opacity: 1;
+            z-index: 6;
+        }
+
+        /* Blooming Stars */
+        .star {
+            position: absolute;
+            color: var(--gold);
+            pointer-events: none;
+            animation: bloom 2s forwards ease-out;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0) rotate(0); opacity: 1; }
+            100% { transform: scale(1.5) rotate(360deg) translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="music" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="glow-circle"></div>
+
+    <div class="envelope-wrapper" id="wrapper" onclick="openLetter()">
+        <div class="flap"></div>
+        <div class="envelope"></div>
+        
+        <div class="letter">
+            <img src="profile.
+jpg" alt="Syafiani">
+            <h2>Happy Birthday, Syafiani</h2>
+            <p>
+                "Some people are like stars—they don’t just exist; they light up every dark corner of the lives they touch..."
+                <br><br>
+                May you always bloom with grace and fire. Today, and every day, the world is better because you are in it.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function openLetter() {
+            const wrapper = document.getElementById('wrapper');
+            const music = document.getElementById('music');
+
+            if (!wrapper.classList.contains('open')) {
+                wrapper.classList.add('open');
+                music.play();
+
+                // Blooming Effect: Burst of stars
+                for (let i = 0; i < 40; i++) {
+                    setTimeout(() => {
+                        const star = document.createElement('div');
+                        star.className = 'star';
+                        star.innerHTML = '✦';
+                        star.style.left = Math.random() * 100 + 'vw';
+                        star.style.top = Math.random() * 100 + 'vh';
+                        star.style.fontSize = Math.random() * 20 + 10 + 'px';
+                        document.body.appendChild(star);
+                        setTimeout(() => star.remove(), 2000);
+                    }, i * 50);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
