@@ -1,118 +1,152 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Grand Celebration for Syafiani ☁️</title>
+    <title>A Special Scrapbook for Syafiani</title>
     <style>
         :root {
             --bg-blue: #cbd9f4;
+            --book-cover: #a2b9e7;
+            --page-color: #fffaf0;
             --soft-pink: #fbcce3;
-            --gold: #ffd700;
-            --white: #ffffff;
+            --dark-blue: #2a5a9e;
         }
 
         body {
             background-color: var(--bg-blue);
-            background-image: radial-gradient(var(--white) 10%, transparent 11%);
-            background-size: 40px 40px;
-            font-family: 'Georgia', serif;
+            background-image: radial-gradient(white 10%, transparent 11%);
+            background-size: 30px 30px;
             display: flex;
             justify-content: center;
-            align-items: center; 
+            align-items: center;
             height: 100vh;
             margin: 0;
+            perspective: 1500px; /* Makes the 3D flip look real */
             overflow: hidden;
+            font-family: 'Georgia', serif;
         }
 
-        .envelope-wrapper {
+        /* The Book Container */
+        .book {
             position: relative;
-            width: 350px;
-            height: 220px;
+            width: 600px;
+            height: 400px;
+            transition: transform 1s;
+            transform-style: preserve-3d;
             cursor: pointer;
-            z-index: 10;
-            transition: transform 0.8s ease;
         }
 
-        /* This moves the whole thing down when opened to keep the letter centered */
-        .envelope-wrapper.open {
-            transform: translateY(120px); 
+        .book.open {
+            transform: translateX(150px); /* Centers the opened book */
         }
 
-        .envelope {
+        /* General Page Styling */
+        .page {
             position: absolute;
             width: 100%;
             height: 100%;
-            background: var(--white);
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            border: 2px solid #eee;
-            z-index: 4;
-        }
-
-        .flap {
-            position: absolute;
             top: 0;
             left: 0;
-            width: 0;
-            height: 0;
-            border-left: 175px solid transparent;
-            border-right: 175px solid transparent;
-            border-top: 130px solid var(--soft-pink);
-            transform-origin: top;
-            transition: transform 0.6s ease;
-            z-index: 5;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 1s;
+            transform-origin: left;
+            transform-style: preserve-3d;
         }
 
-        .letter {
-            position: absolute;
-            bottom: 10px;
-            left: 15px;
-            width: 290px;
-            background: #fff;
-            padding: 25px;
-            border-radius: 15px;
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        /* Cover Page */
+        .cover {
+            background-color: var(--book-cover);
             z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
             text-align: center;
-            opacity: 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 5px solid white;
         }
 
-        /* Updated Image Path to match your file: image.png */
-        .letter img {
-            width: 120px;
-            height: 120px;
-            border-radius: 20px; /* Looks better with your Cinnamoroll image */
-            margin-bottom: 15px;
-            object-fit: contain;
+        .cover h1 {
+            color: white;
+            font-size: 1.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            line-height: 1.4;
         }
 
-        .letter h2 { color: #2a5a9e; font-size: 1.4rem; margin-bottom: 10px; }
-        .letter p { color: #444; font-size: 0.95rem; line-height: 1.6; }
-
-        .envelope-wrapper.open .flap {
-            transform: rotateX(180deg);
+        /* Inside Pages */
+        .inside {
+            background-color: var(--page-color);
             z-index: 1;
+            display: flex;
+            width: 100%;
+            border: 1px solid #ddd;
         }
 
-        .envelope-wrapper.open .letter {
-            transform: translateY(-300px);
-            opacity: 1;
-            z-index: 6;
+        /* Left Side (Photo) */
+        .left-page {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 2px dashed #ccc;
+            padding: 20px;
         }
 
-        .star {
+        .scrapbook-photo {
+            width: 80%;
+            border: 10px solid white;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            object-fit: cover;
+        }
+
+        /* Right Side (Message) */
+        .right-page {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: #444;
+        }
+
+        .right-page h2 {
+            color: var(--dark-blue);
+            margin-top: 0;
+        }
+
+        .right-page p {
+            font-style: italic;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Animation when Opened */
+        .book.open .cover {
+            transform: rotateY(-160deg);
+        }
+
+        /* Birthday Decorations */
+        .sparkle {
             position: absolute;
-            color: var(--gold);
             pointer-events: none;
-            animation: bloom 2s forwards ease-out;
-            z-index: 100;
+            animation: bloom 2s forwards;
         }
 
         @keyframes bloom {
-            0% { transform: scale(0) rotate(0); opacity: 1; }
-            100% { transform: scale(1.5) rotate(360deg) translateY(-200px); opacity: 0; }
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
+        }
+
+        /* Tap Label */
+        #tap-hint {
+            position: absolute;
+            bottom: -50px;
+            width: 100%;
+            text-align: center;
+            color: var(--dark-blue);
+            font-weight: bold;
         }
     </style>
 </head>
@@ -121,42 +155,49 @@
     <audio id="music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
+<div class="book" id="scrapbook" onclick="openBook()">
+        <div class="page inside">
+            <div class="left-page">
+                <img src="image.png" class="scrapbook-photo" alt="Miss Syafiani">
+            </div>
+            <div class="right-page">
+                <h2>Happy Birthday!</h2>
+                <p>
+                    "Some people are like stars—they don’t just exist; they light up every dark corner of the lives they touch..."
+                    <br><br>
+                    Watching you bloom into the person you are today is a beautiful thing. May your life always be a garden of joy.
+                </p>
+                <div style="font-size: 2rem;">🎂✨🌸</div>
+            </div>
+        </div>
 
-    <div class="envelope-wrapper" id="wrapper" onclick="openLetter()">
-        <div class="flap"></div>
-        <div class="envelope"></div>
-        
-        <div class="letter">
-            <img src="image.png" alt="Cinnamoroll">
-            <h2>Happy Birthday, Syafiani</h2>
-            <p>
-                "Some people are like stars—they don’t just exist; they light up every dark corner of the lives they touch..."
-                <br><br>
-                May you always bloom with grace and fire.
-Today, and every day, the world is better because you are in it.
-            </p>
+        <div class="page cover" id="coverPage">
+            <h1>Click to open this special book,<br>Miss Syafiani ☁️</h1>
+            <div id="tap-hint">Tap to open 💌</div>
         </div>
     </div>
 
     <script>
-        function openLetter() {
-            const wrapper = document.getElementById('wrapper');
+        function openBook() {
+            const book = document.getElementById('scrapbook');
             const music = document.getElementById('music');
-
-            if (!wrapper.classList.contains('open')) {
-                wrapper.classList.add('open');
+            
+            if (!book.classList.contains('open')) {
+                book.classList.add('open');
                 music.play();
 
-                for (let i = 0; i < 40; i++) {
+                // Blooming Decorations
+                for (let i = 0; i < 30; i++) {
                     setTimeout(() => {
-                        const star = document.createElement('div');
-                        star.className = 'star';
-                        star.innerHTML = '✦';
-                        star.style.left = Math.random() * 100 + 'vw';
-                        star.style.top = Math.random() * 100 + 'vh';
-                        document.body.appendChild(star);
-                        setTimeout(() => star.remove(), 2000);
-                    }, i * 50);
+                        const s = document.createElement('div');
+                        s.className = 'sparkle';
+                        s.innerHTML = ['✨','🌸','🌟','☁️'][Math.floor(Math.random()*4)];
+                        s.style.left = Math.random() * 100 + 'vw';
+                        s.style.top = Math.random() * 100 + 'vh';
+                        s.style.fontSize = '25px';
+                        document.body.appendChild(s);
+                        setTimeout(() => s.remove(), 2000);
+                    }, i * 100);
                 }
             }
         }
